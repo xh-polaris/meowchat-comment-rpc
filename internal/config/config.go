@@ -10,7 +10,7 @@ type Config struct {
 	RedisConf cache.CacheConf
 	MongoConf struct {
 		Source      string
-		DataBase    string
+		Database    string
 		CollComment string
 		CollHistory string
 	}

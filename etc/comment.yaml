@@ -1,14 +1,14 @@
 Name: comment.rpc
 ListenOn: 0.0.0.0:8080
 Log:
-    Level: debug
-    encoding: plain
+  Level: debug
+  Encoding: plain
 RedisConf:
   - Host: localhost:6379
     Type: node
     Pass: ""
 MongoConf:
-    Source: mongodb://test:testpassword@localhost:27017
-    DataBase: meowchat
-    CollComment: comment
-    CollHistory: history
+  Source: mongodb://root:password@localhost:27017
+  Database: meowchat_comment
+  CollComment: comment
+  CollHistory: history
