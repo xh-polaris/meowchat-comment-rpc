@@ -35,7 +35,13 @@ func (l *DeleteCommentLogic) saveToHistory(data *commentcached.Comment) error {
 // 删除
 func (l *DeleteCommentLogic) DeleteComment(in *pb.DeleteCommentByIdRequest) (*pb.DeleteCommentByIdResponse, error) {
 	data, err := l.svcCtx.CommentModel.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 	err = l.saveToHistory(data)
+	if err != nil {
+		return nil, err
+	}
 	err = l.svcCtx.CommentModel.Delete(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
