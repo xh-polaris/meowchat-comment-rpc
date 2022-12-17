@@ -42,6 +42,7 @@ func (l *DeleteCommentLogic) DeleteComment(in *pb.DeleteCommentByIdRequest) (*pb
 		return nil, err
 	}
 	if err = l.saveToHistory(data); err != nil {
+
 		return nil, err
 	}
 	if err = l.svcCtx.CommentModel.Delete(l.ctx, in.Id); err != nil {

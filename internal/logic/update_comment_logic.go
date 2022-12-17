@@ -38,6 +38,9 @@ func (l *UpdateCommentLogic) UpdateComment(in *pb.UpdateCommentRequest) (*pb.Upd
 		return nil, err
 	}
 	err = l.saveToHistory(old)
+	if err != nil {
+		return nil, err
+	}
 	old.Text = in.Text
 	err = l.svcCtx.CommentModel.Update(l.ctx, old)
 	if err != nil {
