@@ -1,4 +1,4 @@
-module github.com/xh-polaris/meowchat-post-rpc
+module github.com/xh-polaris/meowchat-comment-rpc
 
 go 1.19
 

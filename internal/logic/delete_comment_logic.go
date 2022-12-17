@@ -2,11 +2,11 @@ package logic
 
 import (
 	"context"
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commentcached"
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commenthistory"
-	"github.com/xh-polaris/meowchat-post-rpc/pb"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commentcached"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commenthistory"
+	"github.com/xh-polaris/meowchat-comment-rpc/pb"
 
-	"github.com/xh-polaris/meowchat-post-rpc/internal/svc"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -34,11 +34,19 @@ func (l *DeleteCommentLogic) saveToHistory(data *commentcached.Comment) error {
 
 // 删除
 func (l *DeleteCommentLogic) DeleteComment(in *pb.DeleteCommentByIdRequest) (*pb.DeleteCommentByIdResponse, error) {
-	data, err := l.svcCtx.CommentModel.FindOne(l.ctx, in.Id)
-	err = l.saveToHistory(data)
-	err = l.svcCtx.CommentModel.Delete(l.ctx, in.Id)
-	if err != nil {
+
+	var data *commentcached.Comment
+	var err error
+
+	if data, err = l.svcCtx.CommentModel.FindOne(l.ctx, in.Id); err != nil {
 		return nil, err
 	}
+	if err = l.saveToHistory(data); err != nil {
+		return nil, err
+	}
+	if err = l.svcCtx.CommentModel.Delete(l.ctx, in.Id); err != nil {
+		return nil, err
+	}
+
 	return &pb.DeleteCommentByIdResponse{}, nil
 }

@@ -1,7 +1,7 @@
 package commenthistory
 
 import (
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commentcached"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commentcached"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
