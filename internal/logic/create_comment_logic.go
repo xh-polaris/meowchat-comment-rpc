@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commentcached"
-	"github.com/xh-polaris/meowchat-post-rpc/internal/svc"
-	"github.com/xh-polaris/meowchat-post-rpc/pb"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commentcached"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/svc"
+	"github.com/xh-polaris/meowchat-comment-rpc/pb"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -24,7 +24,6 @@ func NewCreateCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 
 // 创建
 func (l *CreateCommentLogic) CreateComment(in *pb.CreateCommentRequest) (*pb.CreateCommentResponse, error) {
-
 	data := commentcached.Comment{
 		Text:     in.Text,
 		AuthorId: in.AuthorId,
@@ -32,8 +31,7 @@ func (l *CreateCommentLogic) CreateComment(in *pb.CreateCommentRequest) (*pb.Cre
 		Type:     in.Type,
 		ParentId: in.ParentId,
 	}
-	err := l.svcCtx.CommentModel.Insert(l.ctx, &data)
-	if err != nil {
+	if err := l.svcCtx.CommentModel.Insert(l.ctx, &data); err != nil {
 		return nil, err
 	}
 	return &pb.CreateCommentResponse{

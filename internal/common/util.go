@@ -1,8 +1,8 @@
 package common
 
 import (
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commentcached"
-	"github.com/xh-polaris/meowchat-post-rpc/pb"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commentcached"
+	"github.com/xh-polaris/meowchat-comment-rpc/pb"
 )
 
 func CommentConvert(in commentcached.Comment) *pb.Comment {

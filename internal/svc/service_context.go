@@ -1,9 +1,9 @@
 package svc
 
 import (
-	"github.com/xh-polaris/meowchat-post-rpc/internal/config"
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commentcached"
-	"github.com/xh-polaris/meowchat-post-rpc/internal/model/mongo/commenthistory"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/config"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commentcached"
+	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commenthistory"
 )
 
 type ServiceContext struct {
