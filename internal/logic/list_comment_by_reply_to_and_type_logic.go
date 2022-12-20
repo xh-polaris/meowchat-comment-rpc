@@ -25,12 +25,13 @@ func NewListCommentByReplyToAndTypeLogic(ctx context.Context, svcCtx *svc.Servic
 
 // 根据 replyTo & type 查找
 func (l *ListCommentByReplyToAndTypeLogic) ListCommentByReplyToAndType(in *pb.ListCommentByReplyToAndTypeRequest) (*pb.ListCommentByReplyToAndTypeResponse, error) {
-	data, err := l.svcCtx.CommentModel.FindByReplyToAndType(l.ctx, in.Type, in.ReplyTo, in.Skip, in.Limit)
+	data, count, err := l.svcCtx.CommentModel.FindByReplyToAndType(l.ctx, in.Type, in.ReplyTo, in.Skip, in.Limit)
 	if err != nil {
 		return nil, err
 	}
 	res := pb.ListCommentByReplyToAndTypeResponse{
 		Comments: make([]*pb.Comment, 0, len(data)),
+		Total:    count,
 	}
 	for _, val := range data {
 		res.Comments = append(res.Comments,

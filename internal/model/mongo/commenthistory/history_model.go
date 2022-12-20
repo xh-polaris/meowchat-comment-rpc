@@ -2,6 +2,8 @@ package commenthistory
 
 import "github.com/zeromicro/go-zero/core/stores/mon"
 
+const HistoryCollectionName = "history"
+
 var _ HistoryModel = (*customHistoryModel)(nil)
 
 type (
@@ -17,8 +19,8 @@ type (
 )
 
 // NewHistoryModel returns a model for the mongo.
-func NewHistoryModel(url, db, collection string) HistoryModel {
-	conn := mon.MustNewModel(url, db, collection)
+func NewHistoryModel(url, db string) HistoryModel {
+	conn := mon.MustNewModel(url, db, HistoryCollectionName)
 	return &customHistoryModel{
 		defaultHistoryModel: newDefaultHistoryModel(conn),
 	}
