@@ -3,12 +3,10 @@ ListenOn: 0.0.0.0:8080
 Log:
   Level: debug
   Encoding: plain
-RedisConf:
+Cache:
   - Host: localhost:6379
     Type: node
     Pass: ""
-MongoConf:
-  Source: mongodb://root:password@localhost:27017
-  Database: meowchat_comment
-  CollComment: comment
-  CollHistory: history
+Mongo:
+  URL: mongodb://root:password@localhost:27017
+  DB: meowchat_comment

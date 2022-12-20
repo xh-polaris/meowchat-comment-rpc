@@ -8,6 +8,8 @@ import (
 	mopt "go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const CommentCollectionName = "comment"
+
 var _ CommentModel = (*customCommentModel)(nil)
 
 type (
@@ -68,8 +70,8 @@ func (c customCommentModel) FindByAuthorIdAndType(ctx context.Context, authorId 
 }
 
 // NewCommentModel returns a model for the mongo.
-func NewCommentModel(url, db, collection string, c cache.CacheConf) CommentModel {
-	conn := monc.MustNewModel(url, db, collection, c)
+func NewCommentModel(url, db string, c cache.CacheConf) CommentModel {
+	conn := monc.MustNewModel(url, db, CommentCollectionName, c)
 	return &customCommentModel{
 		defaultCommentModel: newDefaultCommentModel(conn),
 	}
