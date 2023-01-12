@@ -62,7 +62,7 @@ message ListCommentByParentRequest {
 
 message ListCommentByParentResponse {
 	repeated Comment comments = 1;
-	int64 total=2;
+	int64 total = 2;
 }
 
 // 根据 id 查找 comment
@@ -90,7 +90,7 @@ message ListCommentByAuthorIdAndTypeRequest {
 
 message ListCommentByAuthorIdAndTypeResponse {
 	repeated Comment comments = 1;
-	int64 total=2;
+	int64 total = 2;
 }
 
 // 根据 replyTo & type 查找
@@ -104,7 +104,7 @@ message ListCommentByReplyToAndTypeRequest {
 
 message ListCommentByReplyToAndTypeResponse {
 	repeated Comment comments = 1;
-	int64 total=2;
+	int64 total = 2;
 }
 
 service comment_rpc {

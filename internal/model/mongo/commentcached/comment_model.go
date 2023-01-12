@@ -37,6 +37,7 @@ func (c customCommentModel) FindByReplyToAndType(ctx context.Context, _type stri
 		&mopt.FindOptions{
 			Skip:  &skip,
 			Limit: &limit,
+			Sort:  bson.M{"createAt": -1},
 		}); err != nil {
 		return nil, 0, err
 	}
@@ -58,6 +59,7 @@ func (c customCommentModel) FindByParent(ctx context.Context, _type string, pare
 		&mopt.FindOptions{
 			Skip:  &skip,
 			Limit: &limit,
+			Sort:  bson.M{"createAt": -1},
 		}); err != nil {
 		return nil, 0, err
 	}
@@ -81,6 +83,7 @@ func (c customCommentModel) FindByAuthorIdAndType(ctx context.Context, authorId 
 		&mopt.FindOptions{
 			Skip:  &skip,
 			Limit: &limit,
+			Sort:  bson.M{"createAt": -1},
 		}); err != nil {
 		return nil, 0, err
 	}
