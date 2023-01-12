@@ -25,13 +25,14 @@ func NewListCommentByParentLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 // 根据 parentId 查找
 func (l *ListCommentByParentLogic) ListCommentByParent(in *pb.ListCommentByParentRequest) (*pb.ListCommentByParentResponse, error) {
-	data, err := l.svcCtx.CommentModel.FindByParent(l.ctx, in.Type, in.ParentId, in.Skip, in.Limit)
+	data, count, err := l.svcCtx.CommentModel.FindByParent(l.ctx, in.Type, in.ParentId, in.Skip, in.Limit)
 	if err != nil {
 		return nil, err
 	}
 
 	res := pb.ListCommentByParentResponse{
 		Comments: make([]*pb.Comment, 0, len(data)),
+		Total:    count,
 	}
 	for _, val := range data {
 		res.Comments = append(res.Comments,

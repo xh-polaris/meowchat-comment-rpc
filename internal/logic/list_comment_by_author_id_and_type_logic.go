@@ -25,15 +25,16 @@ func NewListCommentByAuthorIdAndTypeLogic(ctx context.Context, svcCtx *svc.Servi
 
 // 根据 authorId & type 查找
 func (l *ListCommentByAuthorIdAndTypeLogic) ListCommentByAuthorIdAndType(in *pb.ListCommentByAuthorIdAndTypeRequest) (*pb.ListCommentByAuthorIdAndTypeResponse, error) {
-	data, err := l.svcCtx.CommentModel.FindByAuthorIdAndType(l.ctx, in.AuthorId, in.Type, in.Skip, in.Limit)
+	data, count, err := l.svcCtx.CommentModel.FindByAuthorIdAndType(l.ctx, in.AuthorId, in.Type, in.Skip, in.Limit)
 	if err != nil {
 		return nil, err
 	}
-	res := make([]*pb.Comment, 0, len(data))
-	for _, val := range data {
-		res = append(res, common.CommentConvert(val))
+	res := pb.ListCommentByAuthorIdAndTypeResponse{
+		Comments: make([]*pb.Comment, 0, len(data)),
+		Total:    count,
 	}
-	return &pb.ListCommentByAuthorIdAndTypeResponse{
-		Comments: res,
-	}, nil
+	for _, val := range data {
+		res.Comments = append(res.Comments, common.CommentConvert(val))
+	}
+	return &res, nil
 }
