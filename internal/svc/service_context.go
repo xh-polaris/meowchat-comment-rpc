@@ -17,8 +17,8 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:       c,
-		CommentModel: commentcached.NewCommentModel(c.MongoConf.Source, c.MongoConf.Database, c.MongoConf.CollComment, c.RedisConf),
-		HistoryModel: commenthistory.NewHistoryModel(c.MongoConf.Source, c.MongoConf.Database, c.MongoConf.CollHistory),
+		CommentModel: commentcached.NewCommentModel(c.Mongo.URL, c.Mongo.DB, c.Cache),
+		HistoryModel: commenthistory.NewHistoryModel(c.Mongo.URL, c.Mongo.DB),
 		MsgQ:         common.NewMsgQImpl(c.MqConf.NameServer, c.MqConf.Retry, c.MqConf.GroupName),
 	}
 }
