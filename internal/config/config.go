@@ -7,12 +7,10 @@ import (
 
 type Config struct {
 	zrpc.RpcServerConf
-	RedisConf cache.CacheConf
-	MongoConf struct {
-		Source      string
-		Database    string
-		CollComment string
-		CollHistory string
+	Cache cache.CacheConf
+	Mongo struct {
+		URL string
+		DB  string
 	}
 	MqConf struct {
 		NameServer []string
