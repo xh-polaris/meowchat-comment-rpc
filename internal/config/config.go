@@ -14,4 +14,9 @@ type Config struct {
 		CollComment string
 		CollHistory string
 	}
+	MqConf struct {
+		NameServer []string
+		Retry      int
+		GroupName  string
+	}
 }
