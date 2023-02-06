@@ -1,5 +1,5 @@
 Name: comment.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:8070
 Log:
   Level: debug
   Encoding: plain
@@ -8,5 +8,10 @@ Cache:
     Type: node
     Pass: ""
 Mongo:
-  URL: mongodb://root:password@localhost:27017
+  URL: mongodb://localhost:27017
   DB: meowchat_comment
+MqConf:
+  NameServer:
+    - 127.0.0.1:9876
+  Retry: 2
+  GroupName: CommentRpc

@@ -12,4 +12,9 @@ type Config struct {
 		URL string
 		DB  string
 	}
+	MqConf struct {
+		NameServer []string
+		Retry      int
+		GroupName  string
+	}
 }

@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"github.com/xh-polaris/meowchat-comment-rpc/commentrpc"
+	"github.com/xh-polaris/meowchat-comment-rpc/errorx"
 	"github.com/xh-polaris/meowchat-comment-rpc/internal/model/mongo/commentcached"
 	"github.com/xh-polaris/meowchat-comment-rpc/internal/svc"
 	"github.com/xh-polaris/meowchat-comment-rpc/pb"
@@ -32,8 +34,22 @@ func (l *CreateCommentLogic) CreateComment(in *pb.CreateCommentRequest) (*pb.Cre
 		ParentId: in.ParentId,
 	}
 	if err := l.svcCtx.CommentModel.Insert(l.ctx, &data); err != nil {
-		return nil, err
+		return nil, errorx.ErrDataBase
 	}
+
+	msg := commentrpc.CommentMsg{
+		Id:       data.ID.Hex(),
+		AuthorId: data.AuthorId,
+		Type:     data.Type,
+		ParentId: data.ParentId,
+		Time:     data.UpdateAt.Unix(),
+	}
+
+	err := l.svcCtx.MsgQ.SendCreateAsync(msg)
+	if err != nil {
+		logx.Error(err)
+	}
+
 	return &pb.CreateCommentResponse{
 		Id: data.ID.Hex(),
 	}, nil
