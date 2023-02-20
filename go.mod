@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/zeromicro/go-zero v1.4.2
-	go.mongodb.org/mongo-driver v1.11.0
+	go.mongodb.org/mongo-driver v1.11.2
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 )
