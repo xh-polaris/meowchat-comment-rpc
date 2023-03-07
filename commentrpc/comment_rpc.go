@@ -14,6 +14,8 @@ import (
 
 type (
 	Comment                              = pb.Comment
+	CountCommentByParentRequest          = pb.CountCommentByParentRequest
+	CountCommentByParentResponse         = pb.CountCommentByParentResponse
 	CreateCommentRequest                 = pb.CreateCommentRequest
 	CreateCommentResponse                = pb.CreateCommentResponse
 	DeleteCommentByIdRequest             = pb.DeleteCommentByIdRequest
@@ -38,6 +40,8 @@ type (
 		DeleteComment(ctx context.Context, in *DeleteCommentByIdRequest, opts ...grpc.CallOption) (*DeleteCommentByIdResponse, error)
 		// 根据 parentId 查找
 		ListCommentByParent(ctx context.Context, in *ListCommentByParentRequest, opts ...grpc.CallOption) (*ListCommentByParentResponse, error)
+		// 根据 parentId 统计
+		CountCommentByParent(ctx context.Context, in *CountCommentByParentRequest, opts ...grpc.CallOption) (*CountCommentByParentResponse, error)
 		// 根据 id 查找
 		RetrieveCommentById(ctx context.Context, in *RetrieveCommentByIdRequest, opts ...grpc.CallOption) (*RetrieveCommentByIdResponse, error)
 		// 根据 authorId & type 查找
@@ -79,6 +83,12 @@ func (m *defaultCommentRpc) DeleteComment(ctx context.Context, in *DeleteComment
 func (m *defaultCommentRpc) ListCommentByParent(ctx context.Context, in *ListCommentByParentRequest, opts ...grpc.CallOption) (*ListCommentByParentResponse, error) {
 	client := pb.NewCommentRpcClient(m.cli.Conn())
 	return client.ListCommentByParent(ctx, in, opts...)
+}
+
+// 根据 parentId 统计
+func (m *defaultCommentRpc) CountCommentByParent(ctx context.Context, in *CountCommentByParentRequest, opts ...grpc.CallOption) (*CountCommentByParentResponse, error) {
+	client := pb.NewCommentRpcClient(m.cli.Conn())
+	return client.CountCommentByParent(ctx, in, opts...)
 }
 
 // 根据 id 查找

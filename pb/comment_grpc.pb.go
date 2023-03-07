@@ -30,6 +30,8 @@ type CommentRpcClient interface {
 	DeleteComment(ctx context.Context, in *DeleteCommentByIdRequest, opts ...grpc.CallOption) (*DeleteCommentByIdResponse, error)
 	// 根据 parentId 查找
 	ListCommentByParent(ctx context.Context, in *ListCommentByParentRequest, opts ...grpc.CallOption) (*ListCommentByParentResponse, error)
+	// 根据 parentId 统计
+	CountCommentByParent(ctx context.Context, in *CountCommentByParentRequest, opts ...grpc.CallOption) (*CountCommentByParentResponse, error)
 	// 根据 id 查找
 	RetrieveCommentById(ctx context.Context, in *RetrieveCommentByIdRequest, opts ...grpc.CallOption) (*RetrieveCommentByIdResponse, error)
 	// 根据 authorId & type 查找
@@ -82,6 +84,15 @@ func (c *commentRpcClient) ListCommentByParent(ctx context.Context, in *ListComm
 	return out, nil
 }
 
+func (c *commentRpcClient) CountCommentByParent(ctx context.Context, in *CountCommentByParentRequest, opts ...grpc.CallOption) (*CountCommentByParentResponse, error) {
+	out := new(CountCommentByParentResponse)
+	err := c.cc.Invoke(ctx, "/comment.comment_rpc/countCommentByParent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *commentRpcClient) RetrieveCommentById(ctx context.Context, in *RetrieveCommentByIdRequest, opts ...grpc.CallOption) (*RetrieveCommentByIdResponse, error) {
 	out := new(RetrieveCommentByIdResponse)
 	err := c.cc.Invoke(ctx, "/comment.comment_rpc/retrieveCommentById", in, out, opts...)
@@ -121,6 +132,8 @@ type CommentRpcServer interface {
 	DeleteComment(context.Context, *DeleteCommentByIdRequest) (*DeleteCommentByIdResponse, error)
 	// 根据 parentId 查找
 	ListCommentByParent(context.Context, *ListCommentByParentRequest) (*ListCommentByParentResponse, error)
+	// 根据 parentId 统计
+	CountCommentByParent(context.Context, *CountCommentByParentRequest) (*CountCommentByParentResponse, error)
 	// 根据 id 查找
 	RetrieveCommentById(context.Context, *RetrieveCommentByIdRequest) (*RetrieveCommentByIdResponse, error)
 	// 根据 authorId & type 查找
@@ -145,6 +158,9 @@ func (UnimplementedCommentRpcServer) DeleteComment(context.Context, *DeleteComme
 }
 func (UnimplementedCommentRpcServer) ListCommentByParent(context.Context, *ListCommentByParentRequest) (*ListCommentByParentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCommentByParent not implemented")
+}
+func (UnimplementedCommentRpcServer) CountCommentByParent(context.Context, *CountCommentByParentRequest) (*CountCommentByParentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CountCommentByParent not implemented")
 }
 func (UnimplementedCommentRpcServer) RetrieveCommentById(context.Context, *RetrieveCommentByIdRequest) (*RetrieveCommentByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RetrieveCommentById not implemented")
@@ -240,6 +256,24 @@ func _CommentRpc_ListCommentByParent_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CommentRpc_CountCommentByParent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CountCommentByParentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommentRpcServer).CountCommentByParent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/comment.comment_rpc/countCommentByParent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommentRpcServer).CountCommentByParent(ctx, req.(*CountCommentByParentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CommentRpc_RetrieveCommentById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RetrieveCommentByIdRequest)
 	if err := dec(in); err != nil {
@@ -316,6 +350,10 @@ var CommentRpc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "listCommentByParent",
 			Handler:    _CommentRpc_ListCommentByParent_Handler,
+		},
+		{
+			MethodName: "countCommentByParent",
+			Handler:    _CommentRpc_CountCommentByParent_Handler,
 		},
 		{
 			MethodName: "retrieveCommentById",

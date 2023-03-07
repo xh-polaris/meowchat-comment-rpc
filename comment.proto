@@ -65,6 +65,18 @@ message ListCommentByParentResponse {
 	int64 total = 2;
 }
 
+// 根据 parentId 查找所有评论
+
+
+message CountCommentByParentRequest {
+	string type = 1;
+	string parentId = 2;
+}
+
+message CountCommentByParentResponse {
+	int64 total = 1;
+}
+
 // 根据 id 查找 comment
 
 
@@ -116,6 +128,8 @@ service comment_rpc {
 	rpc deleteComment(DeleteCommentByIdRequest) returns(DeleteCommentByIdResponse);
 	// 根据 parentId 查找
 	rpc listCommentByParent(ListCommentByParentRequest) returns(ListCommentByParentResponse);
+	// 根据 parentId 统计
+	rpc countCommentByParent(CountCommentByParentRequest) returns(CountCommentByParentResponse);
 	// 根据 id 查找
 	rpc retrieveCommentById(RetrieveCommentByIdRequest) returns(RetrieveCommentByIdResponse);
 	// 根据 authorId & type 查找

@@ -46,6 +46,12 @@ func (s *CommentRpcServer) ListCommentByParent(ctx context.Context, in *pb.ListC
 	return l.ListCommentByParent(in)
 }
 
+// 根据 parentId 统计
+func (s *CommentRpcServer) CountCommentByParent(ctx context.Context, in *pb.CountCommentByParentRequest) (*pb.CountCommentByParentResponse, error) {
+	l := logic.NewCountCommentByParentLogic(ctx, s.svcCtx)
+	return l.CountCommentByParent(in)
+}
+
 // 根据 id 查找
 func (s *CommentRpcServer) RetrieveCommentById(ctx context.Context, in *pb.RetrieveCommentByIdRequest) (*pb.RetrieveCommentByIdResponse, error) {
 	l := logic.NewRetrieveCommentByIdLogic(ctx, s.svcCtx)

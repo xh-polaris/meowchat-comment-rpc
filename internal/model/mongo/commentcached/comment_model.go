@@ -20,6 +20,7 @@ type (
 		FindByAuthorIdAndType(ctx context.Context, authorId string, _type string, skip int64, limit int64) ([]Comment, int64, error)
 		FindByParent(ctx context.Context, _type string, parentId string, skip int64, limit int64) ([]Comment, int64, error)
 		FindByReplyToAndType(ctx context.Context, _type string, replyTo string, skip int64, limit int64) ([]Comment, int64, error)
+		CountByParent(ctx context.Context, _type string, parentId string) (int64, error)
 	}
 
 	customCommentModel struct {
@@ -27,7 +28,7 @@ type (
 	}
 )
 
-func (c customCommentModel) FindByReplyToAndType(ctx context.Context, _type string, replyTo string, skip int64, limit int64) ([]Comment, int64, error) {
+func (c *customCommentModel) FindByReplyToAndType(ctx context.Context, _type string, replyTo string, skip int64, limit int64) ([]Comment, int64, error) {
 	var data []Comment
 	if err := c.conn.Find(ctx, &data,
 		bson.M{
@@ -41,15 +42,15 @@ func (c customCommentModel) FindByReplyToAndType(ctx context.Context, _type stri
 		}); err != nil {
 		return nil, 0, err
 	}
-	count, err := c.conn.CountDocuments(ctx, bson.M{"replyTo": replyTo,
+	total, err := c.conn.CountDocuments(ctx, bson.M{"replyTo": replyTo,
 		"type": _type})
 	if err != nil {
 		return nil, 0, err
 	}
-	return data, count, err
+	return data, total, err
 }
 
-func (c customCommentModel) FindByParent(ctx context.Context, _type string, parentId string, skip int64, limit int64) ([]Comment, int64, error) {
+func (c *customCommentModel) FindByParent(ctx context.Context, _type string, parentId string, skip int64, limit int64) ([]Comment, int64, error) {
 	var data []Comment
 	if err := c.conn.Find(ctx, &data,
 		bson.M{
@@ -63,17 +64,17 @@ func (c customCommentModel) FindByParent(ctx context.Context, _type string, pare
 		}); err != nil {
 		return nil, 0, err
 	}
-	count, err := c.conn.CountDocuments(ctx, bson.M{
+	total, err := c.conn.CountDocuments(ctx, bson.M{
 		"parentId": parentId,
 		"type":     _type,
 	})
 	if err != nil {
 		return nil, 0, err
 	}
-	return data, count, err
+	return data, total, err
 }
 
-func (c customCommentModel) FindByAuthorIdAndType(ctx context.Context, authorId string, _type string, skip int64, limit int64) ([]Comment, int64, error) {
+func (c *customCommentModel) FindByAuthorIdAndType(ctx context.Context, authorId string, _type string, skip int64, limit int64) ([]Comment, int64, error) {
 	var data []Comment
 	if err := c.conn.Find(ctx, &data,
 		bson.M{
@@ -87,14 +88,25 @@ func (c customCommentModel) FindByAuthorIdAndType(ctx context.Context, authorId 
 		}); err != nil {
 		return nil, 0, err
 	}
-	count, err := c.conn.CountDocuments(ctx, bson.M{
+	total, err := c.conn.CountDocuments(ctx, bson.M{
 		"authorId": authorId,
 		"type":     _type,
 	})
 	if err != nil {
 		return nil, 0, err
 	}
-	return data, count, err
+	return data, total, err
+}
+
+func (c *customCommentModel) CountByParent(ctx context.Context, _type string, parentId string) (int64, error) {
+	total, err := c.conn.CountDocuments(ctx, bson.M{
+		"parentId": parentId,
+		"type":     _type,
+	})
+	if err != nil {
+		return 0, err
+	}
+	return total, nil
 }
 
 // NewCommentModel returns a model for the mongo.
